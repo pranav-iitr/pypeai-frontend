@@ -4,7 +4,7 @@ import Marquee from "@/components/magicui/marquee";
 import client from "@/lib/contentfulClient";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { convertToHtml } from "@/lib/utils";
 interface FeatureCardProps {
   icon: string;
   title: string;
@@ -37,27 +37,9 @@ const ThemeToggle = () => {
   );
 };
 
-export const convertToHtml = (description: any) => {
-  let str = "";
 
-  description.content.forEach((content: any) => {
-    content.content.forEach((content: any) => {
-      if (content.nodeType === "text") {
-        str += content.value;
-      } else if (content.nodeType === "hyperlink") {
-        str += `<a href="${content.data.uri}">${content.content[0].value}</a>`;
-      }
-    });
-    // if (content.nodeType === "paragraph") {
-    //   str += content.value;
-    // } else if (content.nodeType === "hyperlink") {
-    //   str += `<a href="${content.data.uri}">${content.content[0].value}</a>`;
-    // }
-  });
-  return str;
-};
 
-export const getContentByType = async (contentType: string) => {
+const getContentByType = async (contentType: string) => {
   const response = await client.getEntries({ content_type: contentType });
   return response.items;
 };
